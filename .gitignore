@@ -9,3 +9,7 @@
 
 #sample data
 /mysql/DB/sample
+
+#reactの動作確認
+/react-test
+/www/html/build
