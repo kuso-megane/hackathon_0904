@@ -1,0 +1,11 @@
+# vscode関連
+.DS_Store
+
+# composer周りのvendor
+/www/vendor/
+
+# mysqlコンテナのデータ永続化
+/mysql/data
+
+#sample data
+/mysql/DB/sample

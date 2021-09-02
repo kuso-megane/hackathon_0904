@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  app:
+    build: ./apache2/
+    volumes:
+      - ./apache2/php.ini:/usr/local/etc/php/php.ini
+      - ./www:/var/www
+      - ./apache2/conf/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./apache2/conf/docker-php.conf:/etc/apache2/conf-enabled/docker-php.conf
+    ports:
+      - 82:80 #http://localhost:82
+    depends_on:
+      - db
+    
+  db:
+    build: ./mysql/
+    volumes:
+      - ./mysql/DB:/DB
+      - ./mysql/data:/var/lib/mysql
+    ports:
+      - "4309:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+    depends_on:
+      - db
+    ports:
+      - 4042:80 #http://localhost:4042
+    volumes:
+      - ./phpmyadmin/sessions:/sessions
+      
