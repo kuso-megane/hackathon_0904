@@ -6,7 +6,9 @@ drop TABLE if exists Users;
 create table Users(
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     name varchar(100) NOT NULL UNIQUE,
-    password varchar(200) NOT NULL
+    password varchar(200) NOT NULL,
+    locked_time varchar(50) default "2021:09:04:00:00:00",
+    fail_count TINYINT UNSIGNED NOT NULL default 0
 );
 
 
