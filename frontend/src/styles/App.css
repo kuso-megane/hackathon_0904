@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&display=swap');
+
+.brand-name {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.logo-text {
+  vertical-align: middle;
+}
+
+
+.pagination > li > a
+{
+    background-color: white;
+    color: #198754;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: #157347;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination > .active > span,
+.pagination > .active > a
+{
+    color: white;
+    background-color: #157347 !Important;
+    border: solid 1px #157347 !Important;
+}
+
+.pagination > .active > a:hover
+{
+    background-color: #198754 !Important;
+    border: solid 1px #198754;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
