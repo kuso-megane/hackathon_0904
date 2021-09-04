@@ -4,6 +4,7 @@ namespace dataAccess;
 
 use dataAccess\helpers\Connection as Connection;
 use PDO;
+use PDOException;
 
 require_once '/var/www/Model/dataAccess/helpers/Connection.php';
 
@@ -53,7 +54,27 @@ class QuestionsTable
 
 
     /**
+     * @return int the number of all questions
+     * 
+     */
+    public function count()
+    {
+        return $this->dbh->query("SELECT count(*) as sum from " . self::TABLENAME . ';')->fetch(PDO::FETCH_ASSOC)['sum'];
+    }
+
+
+    /**
      * @return bool whether an exception is not thrown
      */
-    public function create(string $title, string $content, $)
+    public function create(string $title, string $content, string $lang, string $code,
+    int $user_id)
+    {
+        $sql = 'INSERT INTO ' . self::TABLENAME . 
+        ' VALUES(id = 0, title = :title, content = :content, lang = :lang, code = :code, user_id = :user_id);';
+
+        $sth = $this->dbh->myPrepare($sql);
+        $sth->execute(
+            [':title' => $title]
+        );
+    }
 }

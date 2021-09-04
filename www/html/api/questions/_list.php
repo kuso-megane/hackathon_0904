@@ -3,7 +3,7 @@
 /**
  * @param json {page: int}
  *
- * @return json {Questions: {}, question_num_per_page: int}
+ * @return json {Questions: {}, question_num_per_page: int, questions_sum: int}
  */
 
 
