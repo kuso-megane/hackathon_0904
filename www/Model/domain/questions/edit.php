@@ -2,7 +2,7 @@
 
 namespace domain\questions;
 
-use dataAccess\AnswerTable;
+use dataAccess\AnswersTable;
 use dataAccess\QuestionsTable;
 
 require_once '/var/www/Model/dataAccess/questionsTable.php';
@@ -17,7 +17,7 @@ function edit(array $input): array
         $question = [];
     }
 
-    $answers = (new AnswerTable)->findByQuestion_id($question_id);
+    $answers = (new AnswersTable)->findByQuestion_id($question_id);
     if ($answers !== NULL) {
         $is_answered = TRUE;
     }

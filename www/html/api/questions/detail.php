@@ -3,7 +3,7 @@
 /**
  * @param json {question_id: int}
  * 
- * @return json {question: {}, answers: {}}
+ * @return json {question: {}, answers: {{}, ...}}
  */
 
 use domain\questions as questions;
