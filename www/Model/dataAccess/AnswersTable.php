@@ -49,4 +49,47 @@ class AnswersTable
 
         return $sth->fetchAll(PDO::FETCH_ASSOC)[0];
     }
+
+
+    /**
+     * @return void
+     */
+    /**
+     * @return void
+     */
+    public function create(string $title, string $content, ?string $lang, ?string $code,
+    int $user_id, int $question_id)
+    {
+        $sql = 'INSERT INTO ' . self::TABLENAME . 
+        ' VALUES(0, :title, :content, :lang, :code, :user_id, :question_id, :created_at, :modified_at, 0);';
+
+        $now = date('Y:m:d:H:i:s');
+
+        $sth = $this->dbh->myPrepare($sql);
+        $sth->execute(
+            [
+                ':title' => $title, ':content' => $content, ':lang' => $lang, ':code' => $code,
+                ':user_id' => $user_id, ':question_id' => $question_id, ':created_at' => $now, ':modified_at' => $now
+            ]
+        );
+    }
+
+
+    /**
+     * @return void
+     * 
+     */
+    public function update(int $id, string $title, string $content, ?string $lang, ?string $code)
+    {
+        $sql = 'UPDATE ' . self::TABLENAME . ' SET title = :title, content = :content, lang = :lang,
+        code = :code, modified_at = :modified_at' . ' where id = :id;';
+        $now = date('Y:m:d:H:i:s');
+
+        $sth = $this->dbh->myPrepare($sql);
+        $sth->execute([
+           ':id' => $id, ':title' => $title, ':content' => $content, ':lang' => $lang, ':code' => $code,
+           ':modified_at' => $now
+        ]);
+
+    }
 }
