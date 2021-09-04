@@ -4,15 +4,8 @@ import Pagination from "react-bootstrap/Pagination";
 import { Link, useHistory } from "react-router-dom";
 import { BaseURL } from "../config";
 
-const Question = ({ qdata }) => {
-  if (qdata === undefined) {
-    return <></>;
-  }
-};
-
 const QuestionsList = ({ page }) => {
   const [questions, setQuestions] = useState([]);
-  const history = useHistory();
 
   const obj = { page: page };
 
@@ -32,23 +25,24 @@ const QuestionsList = ({ page }) => {
     }).catch((error) => {
       console.log(error);
     });
-  }, [])
+  }, [page])
     
   if (questions.questions === undefined || questions.questions.length == 0) {
     return <></>;
   }
-  console.log(questions)
     
   return (
     <>
-      {questions.questions.map((question) => (
-        <div className="que-list border-top py-3">
-          <h5><Link to={"/questions/" + question.id} className="text-decoration-none link-success">{question.title}</Link></h5>
-          <p className="mb-1">{question.content}</p>
+      {questions.questions.map((question, idx) => (
+        <div className={ "que-list border-bottom py-3" + (idx == 0 ? " border-top" : "") }>
+          <h5><Link to={ "/questions/" + question.id } className="text-decoration-none link-success">{ question.title }</Link></h5>
+          <p className="mb-1">{ question.content.length > 140 ? question.content.substr(0, 140) + "..." : question.content }</p>
           <div className="d-flex">
-            <div className="d-inline-block tags me-auto"><Badge bg="light" text="dark">{question.lang}</Badge></div>
-            <div className="d-inline-block user_id me-3">by <Link to={"users/" + question.user_id} className="text-reset">user</Link></div>
-            <div className="d-inline-block created_at">{ question.created_at }</div>
+            <div className="d-inline-block tags me-auto"><Badge bg="light" text="dark">{ question.lang }</Badge></div>
+            <div className="d-inline-block user_id me-3">by <Link to={ "users/" + question.user_id } className="text-reset">user</Link></div>
+            <div className="d-inline-block created_at">{
+              question.created_at.substring(0, 10).replace(/:/g, "/") + " " + question.created_at.substr(11, 5)
+            }</div>
           </div>
         </div>
       ))}

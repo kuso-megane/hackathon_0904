@@ -15,6 +15,10 @@ body {
   vertical-align: middle;
 }
 
+.page-title {
+  border-bottom: dotted 2px #FFC107;
+}
+
 .que-list h5 a {
   font-weight: bold;
 }
