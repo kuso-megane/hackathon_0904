@@ -53,3 +53,4 @@ class MyDbh extends PDO
 
         return $sth;
     }
+}

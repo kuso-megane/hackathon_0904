@@ -8,6 +8,7 @@ use PDO;
 use PDOException;
 
 require_once '/var/www/config/DBConfig.php';
+require_once '/var/www/Model/dataAccess/helpers/MyDbh.php';
 
 class Connection
 {
