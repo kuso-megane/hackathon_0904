@@ -3,7 +3,7 @@
 namespace domain\questions;
 
 use dataAccess\QuestionsTable;
-use dataAccess\AnswerTable;
+use dataAccess\AnswersTable;
 
 require_once '/var/www/Model/dataAccess/QuestionsTable.php';
 require_once '/var/www/Model/dataAccess/AnswersTable.php';
@@ -16,7 +16,7 @@ function detail(array $input): array
     if ($question === NULL) {
         $question = [];
     }
-    $answers = (new AnswerTable)->findByQuestion_id($question_id);
+    $answers = (new AnswersTable)->findByQuestion_id($question_id);
     if ($answers === NULL) {
         $answers = [];
     }
