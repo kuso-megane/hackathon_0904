@@ -64,17 +64,41 @@ class QuestionsTable
 
 
     /**
-     * @return bool whether an exception is not thrown
+     * @return void
      */
-    public function create(string $title, string $content, string $lang, string $code,
+    public function create(string $title, string $content, ?string $lang, ?string $code,
     int $user_id)
     {
         $sql = 'INSERT INTO ' . self::TABLENAME . 
-        ' VALUES(id = 0, title = :title, content = :content, lang = :lang, code = :code, user_id = :user_id);';
+        ' VALUES(0, :title, :content, :lang, :code, :user_id, :created_at, :modified_at, 0);';
+
+        $now = date('Y:m:d:H:i:s');
 
         $sth = $this->dbh->myPrepare($sql);
         $sth->execute(
-            [':title' => $title]
+            [
+                ':title' => $title, ':content' => $content, ':lang' => $lang, ':code' => $code,
+                ':user_id' => $user_id, ':created_at' => $now, ':modified_at' => $now
+            ]
         );
+    }
+
+
+    /**
+     * @return void
+     * 
+     */
+    public function update(int $id, string $title, string $content, ?string $lang, ?string $code)
+    {
+        $sql = 'UPDATE ' . self::TABLENAME . ' SET title = :title, content = :content, lang = :lang,
+        code = :code, modified_at = :modified_at' . ' where id = :id;';
+        $now = date('Y:m:d:H:i:s');
+
+        $sth = $this->dbh->myPrepare($sql);
+        $sth->execute([
+           ':id' => $id, ':title' => $title, ':content' => $content, ':lang' => $lang, ':code' => $code,
+           ':modified_at' => $now
+        ]);
+
     }
 }
