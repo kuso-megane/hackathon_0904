@@ -1,26 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Badge from "react-bootstrap/Badge";
 import Pagination from "react-bootstrap/Pagination";
-import Form from 'react-bootstrap/Form';
+import Form from "react-bootstrap/Form";
 import { Link, useHistory } from "react-router-dom";
+import { BaseURL } from "../config";
+import QuestionsList from "../components/QuestionsList";
 
-const QuestionList = () => {
-  return (
-    <div className="que-list border-top py-3">
-      <h5><Link to="/questions/123" className="text-decoration-none link-success">こんなことで困っています</Link></h5>
-      <p className="mb-1">こんなものをこんなふうにしたいのですが、どうしてもこんなものがあんなふうに動いてしまって上手くいきません。どうしたら良いですか？...</p>
-      <div className="d-flex">
-        <div className="d-inline-block tags me-auto"><Badge bg="light" text="dark">Python3</Badge></div>
-        <div className="d-inline-block user_id me-3">by <Link to="users/123" className="text-reset">user</Link></div>
-        <div className="d-inline-block created_at">2021/09/02 13:10</div>
-      </div>
-    </div>
-  );
-};
 
 const TopPage = () => {
   const history = useHistory();
@@ -77,16 +66,8 @@ const TopPage = () => {
         </Col>
         <Col md={8} lg={9} className="py-3 pe-5">
           <h4 className="text-center py-5">新着の質問</h4>
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
+
+          <QuestionsList page="1" />
 
           <Pagination className="justify-content-center my-5">
             <Pagination.First disabled />
