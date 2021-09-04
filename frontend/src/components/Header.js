@@ -3,10 +3,37 @@ import Button from 'react-bootstrap/Button';
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import Dropdown from 'react-bootstrap/Dropdown';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import UserAvatarImage from "./UserAvatarImage";
 
 
 const Header = ({ loginInfo }) => {
+  const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
+
+  const userMenu =
+    isAuthenticated ? (
+      <NavDropdown
+        size="sm" className="me-3"
+        title={<div className="d-inline-block me-2"><UserAvatarImage className="me-2" /> { user.name }</div>}
+      >
+        <NavDropdown.Item disabled>{ user.email }</NavDropdown.Item>
+        <NavDropdown.Divider />
+        <NavDropdown.Item href="#/action-1">Action</NavDropdown.Item>
+        <NavDropdown.Item href="#/action-2">Another action</NavDropdown.Item>
+        <NavDropdown.Divider />
+        <NavDropdown.Item onClick={() => {logout({ returnTo: window.location.origin });}}>ログアウト</NavDropdown.Item>
+      </NavDropdown>
+    ) : (
+        <Button
+          variant="outline-light" size="sm" className="me-2"
+          onClick={() => loginWithRedirect()}
+        >
+          ログイン
+        </Button>
+    );
 
   return (
     <header className="border-bottom border-dark">
@@ -26,8 +53,8 @@ const Header = ({ loginInfo }) => {
             <span className="logo-text ms-2">MARUNAGE DEBUG</span>
           </Navbar.Brand>
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-            <Nav>
-              <Button href="/login" variant="outline-light" size="sm" className="me-2">ログイン</Button>{' '}
+            <Nav style={{ alignItems: "center" }}>
+              {userMenu}
               <Button href="/questions/create" variant="success" size="sm">質問する</Button>
             </Nav>
           </Navbar.Collapse>

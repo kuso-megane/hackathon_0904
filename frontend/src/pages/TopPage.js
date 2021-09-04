@@ -5,6 +5,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Badge from "react-bootstrap/Badge";
 import Pagination from "react-bootstrap/Pagination";
+import Form from 'react-bootstrap/Form';
 import { Link, useHistory } from "react-router-dom";
 
 const QuestionList = () => {
@@ -32,17 +33,49 @@ const TopPage = () => {
         </Col>
       </Row>
       <Row>
-        <Col md={4, { order: "last" }} lg={3} className="bg-light p-3">
-          <h4>ようこそ</h4>
+        <Col md={4, { order: "last" }} lg={3} className="sidebar border-start py-3 ps-4 pe-3">
+          <h4 className="mt-5">ようこそ</h4>
           <p><Link to="/login" className="link-success">ログイン</Link>することで質問・解答ができるようになります。はじめましての方は<Link to="/signup" className="link-success">会員登録</Link>！</p>
 
-          <h4>絞り込み</h4>
-          <h5 class="h6" className="mt-4 h6">言語</h5>
-          <div><Badge bg="secondary">C++</Badge> <Badge bg="secondary">Python3</Badge></div>
-          <h5 className="mt-3 h6">回答状況</h5>
-          <div><Badge bg="secondary">回答あり</Badge> <Badge bg="secondary">未回答</Badge></div>
+          <h4 className="mt-5">検索</h4>
+          <Form>
+            <h5 class="h6" className="mt-4 h6">言語</h5>
+            <div>
+              <Form.Check
+                inline
+                label="Python3"
+                name="lang"
+                type="checkbox"
+                id={`lang-py`}
+              />
+              <Form.Check
+                inline
+                label="C++"
+                name="lang"
+                type="checkbox"
+                id={`lang-cpp`}
+              />
+            </div>
+            <h5 className="mt-3 h6">回答状況</h5>
+            <div>
+              <Form.Check
+                inline
+                label="回答あり"
+                name="status"
+                type="checkbox"
+                id={`status-answered`}
+              />
+              <Form.Check
+                inline
+                label="未回答"
+                name="status"
+                type="checkbox"
+                id={`status-unanswered`}
+              />
+            </div>
+          </Form>
         </Col>
-        <Col md={8} lg={9} className="py-3">
+        <Col md={8} lg={9} className="py-3 pe-5">
           <h4 className="text-center py-5">新着の質問</h4>
           <QuestionList />
           <QuestionList />

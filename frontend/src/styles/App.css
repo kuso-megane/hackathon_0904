@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+body {
+  font-family: Lato, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+}
 
 .brand-name {
   font-family: 'IBM Plex Sans Arabic', sans-serif;
@@ -8,6 +13,15 @@
 
 .logo-text {
   vertical-align: middle;
+}
+
+.que-list h5 a {
+  font-weight: bold;
+}
+
+.sidebar h4 {
+  text-align: center;
+  font-size: 1.2rem !important;
 }
 
 
