@@ -50,4 +50,10 @@ class QuestionsTable
 
         return $sth->fetchAll(PDO::FETCH_ASSOC)[0];
     }
+
+
+    /**
+     * @return bool whether an exception is not thrown
+     */
+    public function create(string $title, string $content, $)
 }
