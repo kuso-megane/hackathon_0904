@@ -1,29 +1,25 @@
-import React from "react";
-import { Button } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Badge from "react-bootstrap/Badge";
 import Pagination from "react-bootstrap/Pagination";
-import Form from 'react-bootstrap/Form';
+import Form from "react-bootstrap/Form";
 import { Link, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import QuestionsList from "../components/QuestionsList";
+import PaginationSet from "../components/PaginationSet";
 
-const QuestionList = () => {
-  return (
-    <div className="que-list border-top py-3">
-      <h5><Link to="/questions/123" className="text-decoration-none link-success">こんなことで困っています</Link></h5>
-      <p className="mb-1">こんなものをこんなふうにしたいのですが、どうしてもこんなものがあんなふうに動いてしまって上手くいきません。どうしたら良いですか？...</p>
-      <div className="d-flex">
-        <div className="d-inline-block tags me-auto"><Badge bg="light" text="dark">Python3</Badge></div>
-        <div className="d-inline-block user_id me-3">by <Link to="users/123" className="text-reset">user</Link></div>
-        <div className="d-inline-block created_at">2021/09/02 13:10</div>
-      </div>
-    </div>
-  );
-};
 
 const TopPage = () => {
+  // Auth0 の提供するフック
+  const { isAuthenticated, user, loginWithRedirect } = useAuth0();
+  // react-router のページ遷移などに使うフック
   const history = useHistory();
+  // /questions/page/:num の numの部分
+  // デフォルト値は "1"
+  const { num = "1" } = useParams();
+
 
   return (
     <Container className="my-5">
@@ -33,9 +29,21 @@ const TopPage = () => {
         </Col>
       </Row>
       <Row>
-        <Col md={4, { order: "last" }} lg={3} className="sidebar border-start py-3 ps-4 pe-3">
+        <Col
+          md={4, { order: "last" }} lg={3}
+          className="sidebar border-start py-3 ps-4 pe-3"
+        >
           <h4 className="mt-5">ようこそ</h4>
-          <p><Link to="/login" className="link-success">ログイン</Link>することで質問・解答ができるようになります。はじめましての方は<Link to="/signup" className="link-success">会員登録</Link>！</p>
+          <p>
+            <a
+              href=""
+              onClick={() => loginWithRedirect()}
+              className="link-success"
+            >
+              ログイン・会員登録
+            </a>
+            すると、質問・解答ができるようになります！
+          </p>
 
           <h4 className="mt-5">検索</h4>
           <Form>
@@ -75,32 +83,32 @@ const TopPage = () => {
             </div>
           </Form>
         </Col>
+
         <Col md={8} lg={9} className="py-3 pe-5">
-          <h4 className="text-center py-5">新着の質問</h4>
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
-          <QuestionList />
+          {num == "1" ? (
+            <h4 className="text-center py-5">
+              <span className="page-title pb-1">
+                新着の質問
+              </span>
+            </h4>
+          ) : (
+            <>
+              <h4 className="text-center pt-5">
+                <span className="page-title pb-1">
+                  質問一覧
+                </span>
+              </h4>
+              <div className="text-center pb-5">{String(num) + " ページ目"}</div>
+            </>
+          )}
 
-          <Pagination className="justify-content-center my-5">
-            <Pagination.First disabled />
-            <Pagination.Prev disabled />
-            <Pagination.Item active>{1}</Pagination.Item>
-            <Pagination.Item>{2}</Pagination.Item>
-            <Pagination.Item>{3}</Pagination.Item>
-            <Pagination.Item>{4}</Pagination.Item>
+          <QuestionsList page={num} />
 
-            <Pagination.Ellipsis disabled />
-            <Pagination.Item>{20}</Pagination.Item>
-            <Pagination.Next />
-            <Pagination.Last />
-          </Pagination>
+          <PaginationSet
+            currentPage={Number(num)}
+            totalPage={10}
+            onClickEvent={(p) => history.push("/questions/page/" + p)}
+          />
 
         </Col>
       </Row>

@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import TopPage from "./pages/TopPage";
 import MyPage from "./pages/MyPage";
-import QuestionsListPage from "./pages/QuestionsListPage";
 import QuestionsCreatePage from "./pages/QuestionsCreatePage";
 import QuestionsEditPage from "./pages/QuestionsEditPage";
 import QuestionsDetailPage from "./pages/QuestionsDetailPage";
@@ -10,6 +8,7 @@ import AnswersEditPage from "./pages/AnswersEditPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import ScrollToTop from './components/ScrollToTop';
 import "./styles/App.css";
 import "./styles/svg.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,8 +17,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="page-content">
+
+        {/* ヘッダー */}
         <Header />
+
+        {/* コンテンツ部分 ( react-router でルーティング) */}
         <Switch>
           <Route exact path="/">
             <TopPage />
@@ -27,8 +31,8 @@ function App() {
           <Route path="/mypage">
             <MyPage />
           </Route>
-          <Route exact path="/questions">
-            <QuestionsListPage />
+          <Route exact path="/questions/page/:num">
+            <TopPage />
           </Route>
           <Route exact path="/questions/create">
             <QuestionsCreatePage />
@@ -46,8 +50,11 @@ function App() {
             <NotFoundPage />
           </Route>
         </Switch>
+
+        {/* フッター */}
+        <Footer />
+
       </div>
-      <Footer />
     </Router>
   );
 }
