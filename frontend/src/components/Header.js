@@ -8,10 +8,12 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import UserAvatarImage from "./UserAvatarImage";
+import { useHistory } from "react-router-dom";
 
 
-const Header = ({ loginInfo }) => {
+const Header = () => {
   const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
+  const history = useHistory();
 
   const userMenu =
     isAuthenticated ? (
@@ -39,7 +41,7 @@ const Header = ({ loginInfo }) => {
     <header className="border-bottom border-dark">
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="/" className="brand-name">
+          <Navbar.Brand onClick={() => history.push("/")} className="brand-name" style={{ cursor: "pointer" }}>
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px"
               height="24px" viewBox="0 0 140 140">
             <path class="st1" d="M110.97,140H29.03C13,140,0,127,0,110.97V29.03C0,13,13,0,29.03,0h81.95C127,0,140,13,140,29.03v81.95
@@ -55,7 +57,7 @@ const Header = ({ loginInfo }) => {
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
             <Nav style={{ alignItems: "center" }}>
               {userMenu}
-              <Button href="/questions/create" variant="success" size="sm">質問する</Button>
+              <Button onClick={() => history.push("/questions/create")} variant="success" size="sm">質問する</Button>
             </Nav>
           </Navbar.Collapse>
         </Container>
