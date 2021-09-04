@@ -16,5 +16,8 @@ $input = json_decode(file_get_contents('php://input'), true); //array
 
 $output = json_encode(questions\_list($input));
 
+header('Access-Control-Allow-Origin: http://localhost:3000');
+header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
+
 echo $output;
 
