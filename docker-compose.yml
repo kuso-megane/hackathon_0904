@@ -34,4 +34,11 @@ services:
       - 4042:80 #http://localhost:4042
     volumes:
       - ./phpmyadmin/sessions:/sessions
+  
+  lang_exe:
+    build: ./lang_exe/
+    
+    ports:
+      - 5001:80
+
       
