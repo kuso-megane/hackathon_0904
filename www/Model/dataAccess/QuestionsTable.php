@@ -34,4 +34,20 @@ class QuestionsTable
 
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+    /**
+     * @return array|NULL [the question whose id is designated]
+     * if no record is found, return NULL
+     */
+    public function findById(int $id): ?array
+    {
+        $sql = 'SELECT * FROM ' . self::TABLENAME . ' WHERE id = :id;';
+
+        $sth = $this->dbh->myPrepare($sql);
+        $sth->bindValue(':id', $id, PDO::PARAM_INT);
+        $sth->execute();
+
+        return $sth->fetchAll(PDO::FETCH_ASSOC)[0];
+    }
 }
