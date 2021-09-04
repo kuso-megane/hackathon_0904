@@ -4,5 +4,5 @@ namespace config;
 
 class AppConfig
 {
-    const question_num_per_page = '10'; //暫定
+    const QUESTION_NUM_PER_PAGE = '10'; //暫定
 }
