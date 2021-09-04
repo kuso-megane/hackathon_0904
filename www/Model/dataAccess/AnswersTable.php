@@ -7,7 +7,7 @@ use PDO;
 
 require_once '/var/www/Model/dataAccess/helpers/Connection.php';
 
-class AnswerTable
+class AnswersTable
 {
     const TABLENAME = 'Answers';
     private $dbh;
@@ -29,6 +29,22 @@ class AnswerTable
 
         $sth = $this->dbh->myPrepare($sql);
         $sth->bindValue(':question_id', $question_id, PDO::PARAM_INT);
+        $sth->execute();
+
+        return $sth->fetchAll(PDO::FETCH_ASSOC)[0];
+    }
+
+
+    /**
+     * @return array|NULL answer
+     * if no record is found, return NULL
+     */
+    public function findById(int $id): ?array
+    {
+        $sql = 'SELECT * FROM ' . self::TABLENAME . ' WHERE id = :id;';
+
+        $sth = $this->dbh->myPrepare($sql);
+        $sth->bindValue(':id', $id, PDO::PARAM_INT);
         $sth->execute();
 
         return $sth->fetchAll(PDO::FETCH_ASSOC)[0];
