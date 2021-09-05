@@ -35,9 +35,14 @@ services:
     volumes:
       - ./phpmyadmin/sessions:/sessions
   
-  lang_exe:
-    build: ./lang_exe/
-    
+  lang_exe_interactor:
+    build: ./lang_exe_interactor/
+    volumes:
+      - ./lang_exe_interactor/php.ini:/usr/local/etc/php/php.ini
+      - ./lang_exe_interactor/www/:/var/www
+      - ./lang_exe_interactor/conf/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./lang_exe_interactor/conf/docker-php.conf:/etc/apache2/conf-enabled/docker-php.conf
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 5001:80
 
