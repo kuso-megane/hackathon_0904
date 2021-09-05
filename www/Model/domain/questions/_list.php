@@ -20,7 +20,7 @@ function _list(array $input): array
         $questions_sum = (new QuestionsTable)->count();
     }
     catch(Exception $e) {
-        echo $e->getMessage();
+        #echo $e->getMessage();
         return [];
     }
     

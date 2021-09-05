@@ -11,7 +11,7 @@ require_once '/var/www/Model/dataAccess/helpers/Connection.php';
 
 class UsersTable
 {
-    const TABLENAME = 'UsersTable';
+    const TABLENAME = 'Users';
 
     private $dbh;
 
@@ -33,6 +33,21 @@ class UsersTable
         $sth = $this->dbh->myPrepare($sql);
         $sth->bindValue(':id', $id, PDO::PARAM_INT);
         $sth->execute();
+
+        return $sth->fetchAll(PDO::FETCH_ASSOC)[0];
+    }
+
+
+    /**
+     * @return array|NULL
+     * if no record is found, return NULL
+     */
+    public function findByName(string $name): ?array
+    {
+        $sql = 'SELECT * FROM ' . self::TABLENAME . ' WHERE name = :name;';
+
+        $sth = $this->dbh->myPrepare($sql);
+        $sth->execute([':name' => $name]);
 
         return $sth->fetchAll(PDO::FETCH_ASSOC)[0];
     }
