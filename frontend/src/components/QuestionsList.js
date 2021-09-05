@@ -39,7 +39,7 @@ const QuestionsList = ({ page }) => {
           <p className="mb-1">{ question.content.length > 140 ? question.content.substr(0, 140) + "..." : question.content }</p>
           <div className="d-flex">
             <div className="d-inline-block tags me-auto"><Badge bg="light" text="dark">{ question.lang }</Badge></div>
-            <div className="d-inline-block user_id me-3">by <Link to={ "users/" + question.user_id } className="text-reset">user</Link></div>
+            <div className="d-inline-block user_id me-3">by <Link to={ "users/" + question.user_id } className="text-reset">testuser</Link></div>
             <div className="d-inline-block created_at">{
               question.created_at.substring(0, 10).replace(/:/g, "/") + " " + question.created_at.substr(11, 5)
             }</div>
