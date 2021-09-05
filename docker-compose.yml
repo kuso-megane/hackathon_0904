@@ -41,7 +41,7 @@ services:
       - ./lang_exe/main/php.ini:/usr/local/etc/php/php.ini
       - ./lang_exe/main/www/:/var/www
       - ./lang_exe/main/conf/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
-      - ./lang_exes/main/conf/docker-php.conf:/etc/apache2/conf-enabled/docker-php.conf
+      - ./lang_exe/main/conf/docker-php.conf:/etc/apache2/conf-enabled/docker-php.conf
       - /var/run/docker.sock:/var/run/docker.sock
       - ./exe_mnt/:/mnt/
     ports:
