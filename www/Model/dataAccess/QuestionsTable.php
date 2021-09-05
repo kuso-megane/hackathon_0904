@@ -25,7 +25,7 @@ class QuestionsTable
      */
     public function findAll(int $page, int $num_per_page): array
     {
-        $sql = 'SELECT * FROM ' . self::TABLENAME . ' order by created_at ' . 'limit :start, :end;';
+        $sql = 'SELECT * FROM ' . self::TABLENAME . ' order by created_at DESC ' . 'limit :start, :end;';
         $start = $num_per_page * ($page - 1);
         $end = $num_per_page * $page;
 
