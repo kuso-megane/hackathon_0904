@@ -2,15 +2,18 @@
 
 namespace domain\code_exe;
 
+use config\NetworkConfig;
+
+require_once '/var/www/config/NetworkingConfig.php';
+
 
 /**
  * @param array $input [lang => string, code => string]
  * 
  * @return array [result => string]
  */
-function interact(array $input)
+function exe(array $input)
 {
-    $lang_container_hosts_path = '../../../config/lang_container_hosts.json';
 
     #test
     $lang = 'python';
@@ -18,10 +21,8 @@ function interact(array $input)
     for i in range(5):
         print(i)
     ";
-    $code = "\"" . $code . "\"";
 
-    $lang_container_hosts = json_decode(file_get_contents($lang_container_hosts_path), true);
-    $lang_container_host = $lang_container_hosts[$lang];
+    $lang_container_host = NetworkConfig::LANG_EXE_CONTAINER_HOST;
 
     $data = [
         'code' => $code
@@ -34,7 +35,7 @@ function interact(array $input)
         ]
     ];
     $context = stream_context_create($option);
-    $output = file_get_contents($lang_container_host, false, $context); //json
+    $output = file_get_contents($lang_container_host . '/', false, $context); //json
 
     return json_decode($output, true);
 }

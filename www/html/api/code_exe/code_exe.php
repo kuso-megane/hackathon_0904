@@ -8,14 +8,11 @@
 
 use domain\code_exe as code_exe;
 
-$domainPath = '../../../Model/domain/';
-require_once $domainPath . 'code_exe/interactor.php';
+$domainPath = '/var/www/Model/domain/';
+require_once $domainPath . 'code_exe/exe.php';
 
-#test
-$input = [];
-#json_decode(file_get_contents('php://input')); //array
+$input = json_decode(file_get_contents('php://input')); //array
 
-$output = json_encode(code_exe\interact($input));
+$output = json_encode(code_exe\exe($input));
 
-#test
-print $output;
+echo $output;
