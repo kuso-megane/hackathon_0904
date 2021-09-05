@@ -17,8 +17,8 @@ function edit(array $input): array
         $question = [];
     }
 
-    $answers = (new AnswersTable)->findByQuestion_id($question_id);
-    if ($answers !== NULL) {
+    $answers = (new AnswersTable)->findAllByQuestion_id($question_id);
+    if (count($answers) > 0) {
         $is_answered = TRUE;
     }
     else {

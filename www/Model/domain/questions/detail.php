@@ -16,10 +16,7 @@ function detail(array $input): array
     if ($question === NULL) {
         $question = [];
     }
-    $answers = (new AnswersTable)->findByQuestion_id($question_id);
-    if ($answers === NULL) {
-        $answers = [];
-    }
+    $answers = (new AnswersTable)->findAllByQuestion_id($question_id);
 
 
     return [
