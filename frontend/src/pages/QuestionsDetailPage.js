@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { useHistory } from "react-router-dom";
+import { BaseURL, ToLangName } from "../config";
+import { useParams } from "react-router-dom";
 /* highlight.js */
 import hljs from 'highlight.js/lib/core';
 import 'highlight.js/styles/github.css';
@@ -14,12 +17,105 @@ import cpp from 'highlight.js/lib/languages/cpp';
 hljs.registerLanguage('cpp', cpp);
 
 const QuestionsDetailPage = () => {
-  const history = useHistory();
+  const [qTitle, setQTitle] = useState("");
+  const [qContent, setQContent] = useState("");
+  const [qLang, setQLang] = useState("py");
+  const [qCode, setQCode] = useState("");
+  const [res, setRes] = useState([]);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [detail, setDetail] = useState([]);
+  const { id = "1" } = useParams();
 
+  let posted = false;
+
+  const obj = { question_id: id }
+
+  const method = "POST";
+  const body = JSON.stringify(obj);
+  const headers = {
+      "Accept": "application/json",
+      "Content-Type": "text/plain"
+  };
+
+  useEffect(() => {
+    fetch(BaseURL + "api/questions/detail.php", {method: method, headers: headers, body: body, mode: "cors"})
+    .then(res => res.json())
+    .then(data => {
+      setDetail(data);
+      console.log(data);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }, [id, posted])
+
+    const onSendQuestion = () => {
+    setSuccessMessage(() => "");
+    setErrorMessage(() => "");
+
+    const obj2 = {
+      answer: {
+        id: null,
+        title: qTitle,
+        content: qContent,
+        lang: qLang,
+        code: qCode,
+        user_id: 1,
+        question_id: id,
+        created_at: null,
+        modified_at: null,
+        is_deleted: null
+      }
+    }
+
+    if (qContent.replace(/\s/g, "") === "") {
+      setErrorMessage(() => "回答文が空です");
+      return;
+    }
+
+    if (qCode.replace(/\s/g, "") === "") {
+      setErrorMessage(() => "コードが空です");
+      return;
+    }
+
+    const method = "POST";
+    const body = JSON.stringify(obj2);
+    const headers = {
+        "Accept": "application/json",
+        "Content-Type": "text/plain"
+    };
+
+    fetch(BaseURL + "api/answers/post.php", {method: method, headers: headers, body: body, mode: "cors"})
+    .then(r => r.json())
+    .then(data => {
+      setRes(data);
+      console.log("success!");
+      console.log(data);
+      console.log(res);
+      setQTitle(() => "");
+      setQContent(() => "");
+      setQCode(() => "");
+      if (data.is_successful) {
+        setSuccessMessage(() => "回答を投稿しました");
+        posted = true;
+      }
+      else {
+        setErrorMessage(() => data.error);
+      }
+      console.log(data);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+  
   useEffect(() => {
     hljs.initHighlighting();
     hljs.initHighlighting.called = false;
   });
+  
+  if (detail.question === undefined || detail.question.length == 0) {
+    return <></>;
+  }
 
   return (
     <Container className="my-5">
@@ -36,103 +132,85 @@ const QuestionsDetailPage = () => {
           <h4 className="mt-5">投稿者</h4>
           <p className="text-center"><Link to="/user/123" className="text-reset text-decoration-none">testuser</Link></p>
           <h4 className="mt-5">言語</h4>
-          <p className="text-center">Python3</p>
+          <p className="text-center">{ ToLangName(detail.question.lang) }</p>
           <h4 className="mt-5">投稿日時</h4>
-          <p className="text-center">2021/09/04 18:36</p>
+          <p className="text-center">{ detail.question.created_at }</p>
 
         </Col>
 
         <Col md={8} lg={9} className="que-detail pt-3 pb-5 md-pe-5">
-          <h4 className="text-center py-5">x の y 乗を計算しようとするとエラーになる</h4>
+          <h4 className="text-center py-5">{ detail.question.title }</h4>
 
           <h5>やりたいこと</h5>
+          {detail.question.content}
+          
+          <div className="d-flex align-items-end justify-content-between">
+            <div className="d-inline-block" style={{ width : "50%" }}>
+              <h5>コード</h5>
+            </div>
+            <div className="d-inline-block">
+              <Button variant="outline-warning" className="ms-auto" type="submit">実行</Button>
+            </div>
+          </div>
 
-          C++で入力から数字を2回受け取り、累乗の計算をしたい。
-
-          <h5>コード</h5>
-
-          <pre><code class="language-cpp hljs">
-{`#include <iostream>
-
-int main() {
-  std::cin >> x >> y;
-  std::cout << x ^ y << std::endl;
-}`}
+          <pre><code class={"language-" + detail.question.lang + " hljs"}>
+            {`${detail.question.code}`}
           </code></pre>
 
         </Col>
       </Row>
-      <Row className="border-top">
-        <Col
-          md={4, { order: "last" }} lg={3}
-          className="sidebar border-start py-3 ps-3 md-ps-4 pe-3"
-        >
-        </Col>
-        <Col md={8} lg={9} className="que-detail py-3 md-pe-5">
-          <h4 className="text-center pt-5">
-            <span className="page-title pb-1">
-              回答一覧
-            </span>
-          </h4>
-          <div className="text-center pb-5">{2 + " 件の回答"}</div>
-        </Col>
-      </Row>
-      <Row className="border-top">
-        <Col
-          md={4, { order: "last" }} lg={3}
-          className="sidebar border-start py-3 ps-3 md-ps-4 pe-3"
-        >
-          <h4 className="mt-5">投稿者</h4>
-          <p className="text-center"><Link to="/user/123" className="text-reset text-decoration-none">testuser</Link></p>
-          <h4 className="mt-5">投稿日時</h4>
-          <p className="text-center">2021/09/04 18:36</p>
+      {detail.answers.length > 0 &&
+      <>
+        <Row className="border-top">
+          <Col
+            md={4, { order: "last" }} lg={3}
+            className="sidebar border-start py-3 ps-3 md-ps-4 pe-3"
+          >
+          </Col>
+          <Col md={8} lg={9} className="que-detail py-3 md-pe-5">
+            <h4 className="text-center pt-5">
+              <span className="page-title pb-1">
+                回答一覧
+              </span>
+            </h4>
+            <div className="text-center pb-5">{String(detail.answers.length) + " 件の回答"}</div>
+          </Col>
+        </Row>
+        
+        {detail.answers.map((ans) => (
+          <Row className="border-top">
+            <Col
+              md={4, { order: "last" }} lg={3}
+              className="sidebar border-start py-5 ps-3 md-ps-4 pe-3"
+            >
+              <h4>投稿者</h4>
+              <p className="text-center"><Link to="/user/123" className="text-reset text-decoration-none">testuser</Link></p>
+              <h4 className="mt-5">投稿日時</h4>
+              <p className="text-center">{ans.created_at}</p>
 
-        </Col>
+            </Col>
 
-        <Col md={8} lg={9} className="que-detail py-5 md-pe-5">
-          括弧をつければ動きます。というのも、<code>{`<<`}</code> と <code>{`^`}</code> は両方とも演算子 ( <code>{`+`}</code> や <code>{`/`}</code> などと同じです) なので、これらが変な順序で適用されてしまったのがエラーの原因なのです。よって、括弧をつけて <code>{`x ^ y`}</code> の計算を先に行うようにするとちゃんと動くようになります。
+            <Col md={8} lg={9} className="que-detail py-5 md-pe-5">
+              {ans.content}
 
-          <h5>コード</h5>
+              <div className="d-flex align-items-end justify-content-between">
+                <div className="d-inline-block" style={{ width : "50%" }}>
+                  <h5>コード</h5>
+                </div>
+                <div className="d-inline-block">
+                  <Button variant="outline-warning" className="ms-auto" type="submit">実行</Button>
+                </div>
+              </div>
 
-          <pre><code class="language-cpp hljs">
-{`#include <iostream>
-
-int main() {
-  std::cin >> x >> y;
-  std::cout << (x ^ y) << std::endl;
-}`}
-          </code></pre>
-        </Col>
-
-      </Row>
-      <Row className="border-top">
-        <Col
-          md={4, { order: "last" }} lg={3}
-          className="sidebar border-start py-3 ps-3 md-ps-4 pe-3"
-        >
-          <h4 className="mt-5">投稿者</h4>
-          <p className="text-center"><Link to="/user/123" className="text-reset text-decoration-none">testuser</Link></p>
-          <h4 className="mt-5">投稿日時</h4>
-          <p className="text-center">2021/09/04 18:36</p>
-
-        </Col>
-
-        <Col md={8} lg={9} className="que-detail py-5 md-pe-5">
-          ところで、<code>{`x ^ y`}</code> ではxとyのXOR (排他的論理和) の計算になってしまいます。累乗の計算にはcmathライブラリの <code>{`std::pow`}</code> 関数を使います。
-
-          <h5>コード</h5>
-
-          <pre><code class="language-cpp hljs">
-{`#include <iostream>
-#include <cmath>
-
-int main() {
-  std::cin >> x >> y;
-  std::cout << std::pow(x, y) << std::endl;
-}`}
-          </code></pre>
-        </Col>
-      </Row>
+              <pre><code class={"language-" + detail.question.lang + " hljs"}>
+                {`${ans.code}`}
+              </code></pre>
+            </Col>
+          </Row>
+        ))}
+        
+      </>
+      }
 
       <Row className="border-top">
         <Col
@@ -158,6 +236,8 @@ int main() {
         </Col>
 
         <Col md={8} lg={9} className="que-detail py-5 md-pe-5">
+          {successMessage && <Alert variant="success">{successMessage}</Alert>}
+          {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
           <Form>
             <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
               <Form.Label column sm={2}>
@@ -167,7 +247,9 @@ int main() {
                 <Form.Control
                   as="textarea"
                   placeholder="回答文を入力"
+                  value={qContent}
                   style={{ height: '100px' }}
+                  onChange={(e) => setQContent(e.target.value)}
                 />
               </Col>
             </Form.Group>
@@ -179,7 +261,7 @@ int main() {
                 <div className="d-flex justify-content-between">
                   <div className="d-inline-block" style={{ width : "50%" }}>
                     <Form.Select disabled className="mb-3">
-                      <option>C++</option>
+                      <option value={detail.question.lang}> {ToLangName(detail.question.lang)} </option>
                     </Form.Select>
                   </div>
                   <div className="d-inline-block">
@@ -190,14 +272,21 @@ int main() {
                   as="textarea"
                   placeholder="Your code here"
                   className="monospace"
+                  value={qCode}
                   style={{ height: '100px' }}
+                  onChange={(e) => setQCode(e.target.value)}
                 />
               </Col>
             </Form.Group>
 
             <Form.Group as={Row} className="mb-3">
               <Col sm={{ span: 10, offset: 2 }}>
-                <Button variant="success" type="submit">送信</Button>
+                <Button
+                  variant="success"
+                  onClick={onSendQuestion}
+                >
+                  送信
+                </Button>
               </Col>
             </Form.Group>
           </Form>

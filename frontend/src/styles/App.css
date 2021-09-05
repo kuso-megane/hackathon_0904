@@ -44,6 +44,10 @@ body {
   font-size: 1.2rem !important;
 }
 
+a {
+  color: #157347;
+}
+
 
 .pagination > li > a
 {

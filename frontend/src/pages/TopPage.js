@@ -7,7 +7,6 @@ import { Link, useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import QuestionsList from "../components/QuestionsList";
-import PaginationSet from "../components/PaginationSet";
 
 
 const TopPage = () => {
@@ -106,12 +105,6 @@ const TopPage = () => {
           )}
 
           <QuestionsList page={num} />
-
-          <PaginationSet
-            currentPage={Number(num)}
-            totalPage={10}
-            onClickEvent={(p) => history.push("/questions/page/" + p)}
-          />
 
         </Col>
       </Row>

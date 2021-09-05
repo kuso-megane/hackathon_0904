@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import Badge from "react-bootstrap/Badge";
 import Pagination from "react-bootstrap/Pagination";
 import { Link, useHistory } from "react-router-dom";
-import { BaseURL } from "../config";
+import { BaseURL, ToLangName } from "../config";
+import PaginationSet from "../components/PaginationSet";
 
 const QuestionsList = ({ page }) => {
   const [questions, setQuestions] = useState([]);
+  const history = useHistory();
+
 
   const obj = { page: page };
 
@@ -38,7 +41,7 @@ const QuestionsList = ({ page }) => {
           <h5><Link to={ "/questions/" + question.id } className="text-decoration-none link-success">{ question.title }</Link></h5>
           <p className="mb-1">{ question.content.length > 140 ? question.content.substr(0, 140) + "..." : question.content }</p>
           <div className="d-flex">
-            <div className="d-inline-block tags me-auto"><Badge bg="light" text="dark">{ question.lang }</Badge></div>
+            <div className="d-inline-block tags me-auto"><Badge bg="light" text="dark">{ ToLangName(question.lang) }</Badge></div>
             <div className="d-inline-block user_id me-3">by <Link to={ "users/" + question.user_id } className="text-reset">testuser</Link></div>
             <div className="d-inline-block created_at">{
               question.created_at.substring(0, 10).replace(/:/g, "/") + " " + question.created_at.substr(11, 5)
@@ -46,6 +49,11 @@ const QuestionsList = ({ page }) => {
           </div>
         </div>
       ))}
+      <PaginationSet
+        currentPage={Number(page)}
+        totalPage={Math.ceil(questions.questions_sum / questions.question_num_per_page)}
+        onClickEvent={(p) => history.push("/questions/page/" + p)}
+      />
     </>
   );
 };
