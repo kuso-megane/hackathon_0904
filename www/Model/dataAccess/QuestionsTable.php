@@ -21,6 +21,7 @@ class QuestionsTable
 
     /**
      * @return array [all questions's rows like [id => int, title => string, ...]]
+     * if no record is found, return empty array
      */
     public function findAll(int $page, int $num_per_page): array
     {
@@ -50,6 +51,22 @@ class QuestionsTable
         $sth->execute();
 
         return $sth->fetchAll(PDO::FETCH_ASSOC)[0];
+    }
+
+
+    /**
+     * @return array
+     * if no record is found, return empty array
+     */
+    public function findAllByUser_id(int $user_id): array
+    {
+        $sql = 'SELECT * FROM ' . self::TABLENAME . ' where user_id = :user_id;';
+
+        $sth = $this->dbh->myPrepare($sql);
+        $sth->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $sth->execute();
+
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
 

@@ -19,11 +19,11 @@ class AnswersTable
 
 
     /**
-     * @return array|NULL
+     * @return array
      * [the answer's rows whose question_id is designated one like [id => int, title => string, ...]]
-     * if no record is found, return NULL
+     * if no record is found, return empty array
      */
-    public function findByQuestion_id(int $question_id): ?array
+    public function findAllByQuestion_id(int $question_id): array
     {
         $sql = 'SELECT * FROM ' . self::TABLENAME . ' where question_id = :question_id;';
 
@@ -31,8 +31,25 @@ class AnswersTable
         $sth->bindValue(':question_id', $question_id, PDO::PARAM_INT);
         $sth->execute();
 
-        return $sth->fetchAll(PDO::FETCH_ASSOC)[0];
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+    /**
+     * @return array
+     * if no record is found, return empty array
+     */
+    public function findAllByUser_id(int $user_id): array
+    {
+        $sql = 'SELECT * FROM ' . self::TABLENAME . ' where user_id = :user_id;';
+
+        $sth = $this->dbh->myPrepare($sql);
+        $sth->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $sth->execute();
+
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
 
     /**
