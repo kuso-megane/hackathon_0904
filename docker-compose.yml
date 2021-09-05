@@ -34,4 +34,23 @@ services:
       - 4042:80 #http://localhost:4042
     volumes:
       - ./phpmyadmin/sessions:/sessions
+  
+  lang_exe_main:
+    build: ./lang_exe/main/
+    volumes:
+      - ./lang_exe/main/php.ini:/usr/local/etc/php/php.ini
+      - ./lang_exe/main/www/:/var/www
+      - ./lang_exe/main/conf/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./lang_exe/main/conf/docker-php.conf:/etc/apache2/conf-enabled/docker-php.conf
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./exe_mnt/:/mnt/
+    ports:
+      - 5001:80
+  
+  lang_exe_py:
+    build: ./lang_exe/python/
+    volumes: 
+      - ./exe_mnt/:/mnt/
+
+
       
