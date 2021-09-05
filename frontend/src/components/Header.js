@@ -3,10 +3,13 @@ import Button from 'react-bootstrap/Button';
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import Dropdown from 'react-bootstrap/Dropdown';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import NavLink from "react-bootstrap/NavLink";
 import { useAuth0 } from "@auth0/auth0-react";
 import UserAvatarImage from "./UserAvatarImage";
 import { useHistory } from "react-router-dom";
+import NavItem from "react-bootstrap/NavItem";
 
 
 const Header = () => {
@@ -19,25 +22,30 @@ const Header = () => {
   const userMenu =
     isAuthenticated ? (
       // 認証済みの場合はドロップダウンメニューを表示
-      <NavDropdown
-        size="sm" className="me-3"
-        title={
-          <div className="d-inline-block me-2">
-            <UserAvatarImage className="me-2" /> {user.name}
-          </div>
-        }
+      <Dropdown
+        as={NavItem}
+        size="sm"
+        align="end"
       >
-        <NavDropdown.Item disabled>{ user.email }</NavDropdown.Item>
-        <NavDropdown.Divider />
-        <NavDropdown.Item href="#/action-1">Action</NavDropdown.Item>
-        <NavDropdown.Item href="#/action-2">Another action</NavDropdown.Item>
-        <NavDropdown.Divider />
-        <NavDropdown.Item
-          onClick={() => { logout({ returnTo: window.location.origin }); }}
-        >
-          ログアウト
-        </NavDropdown.Item>
-      </NavDropdown>
+        <Dropdown.Toggle as={NavLink}>
+          <div className="d-inline-block">
+            <UserAvatarImage />
+            <span className="mx-2 sm-invisible">{user.name}</span>
+          </div>
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          <Dropdown.Item disabled>{ user.email }</Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item onClick={() => history.push("/questions/create")}>質問する</Dropdown.Item>
+          <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item
+            onClick={() => { logout({ returnTo: window.location.origin }); }}
+          >
+            ログアウト
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
     ) : (
       // 未認証の場合はログインボタンを表示
       <Button
@@ -70,7 +78,7 @@ const Header = () => {
                 <path class="st0" d="M109.23,86.49L89.48,69.85l19.75-16.61l4.57,4.63L99.27,69.79l14.53,12.07L109.23,86.49z"/>
               </g>
             </svg>
-            <span className="logo-text ms-2">MARUNAGE <span style={{ borderBottom: "dotted 2px #FFC107" }}>DEBUG</span></span>
+            <span className="logo-text ms-2">MARUNAGE <span>DEBUG</span></span>
           </Navbar.Brand>
 
           {/* ログイン情報・「質問する」ボタン */}
@@ -79,7 +87,9 @@ const Header = () => {
               {userMenu}
               <Button
                 onClick={() => history.push("/questions/create")}
-                variant="success" size="sm"
+                variant="success"
+                size="sm"
+                className="ms-3 sm-invisible"
               >
                 質問する
               </Button>

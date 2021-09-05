@@ -11,6 +11,15 @@ body {
   text-decoration: none;
 }
 
+.brand-name .logo-text > span {
+  border-bottom: dotted 2px #FFC107;
+  transition: .3s;
+}
+
+.brand-name:hover .logo-text > span {
+  border-bottom: dotted 2px rgba(255, 193, 7, 0);
+}
+
 .logo-text {
   vertical-align: middle;
 }
@@ -21,6 +30,13 @@ body {
 
 .que-list h5 a {
   font-weight: bold;
+}
+
+.que-detail h5 {
+  margin-top: 3rem!important;
+}
+.que-detail h5:first-of-type {
+  margin-top: 1.5rem!important;
 }
 
 .sidebar h4 {
@@ -59,37 +75,69 @@ body {
     border: solid 1px #198754;
 }
 
-.App {
-  text-align: center;
+.monospace { font-family: Consolas, Lucida Console, monospace; }
+
+pre code {
+  margin-top: 1rem;
+  border-radius: .25rem;
+  border: 1px solid #ced4da;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* 枠線の削除 */
+.hljs-ln {
+margin-bottom: 0;
+border: none;
+}
+.hljs-ln tr, .hljs-ln td {
+border: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* 行番号 */
+.hljs-ln-numbers {
+font-family: inherit;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+text-align: center;
+color: #999;
+vertical-align: top;
+padding-right: 10px;
+width: 2rem;
+min-width: 2rem;
+}
+.hljs-ln-code.hljs-ln-line {
+padding-left: 8px;
+}
+
+@media screen and (max-width : 767px) {
+  .sm-invisible {
+    display: none;
+  }
+
+  .sm-ps-3 {
+    padding-left: 1rem!important;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+@media screen and (min-width : 768px) {
+  .md-ps-4 {
+    padding-left: 1.5rem!important;
+  }
+  .md-pe-5 {
+    padding-right: 3rem!important;
+  }
 }
 
-.App-link {
-  color: #61dafb;
+@media (prefers-reduced-motion: no-preference) {
+  .spin {
+    animation: spin-spin infinite 20s linear;
+  }
 }
 
-@keyframes App-logo-spin {
+@keyframes spin-spin {
   from {
     transform: rotate(0deg);
   }
