@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @param json {question: {}}
+ * @param json {question: {}, 'name': }
  * 
- * @return json {is_successful: bool, error: string}
+ * @return json {is_successful: bool, error: string, question_id: int}
  */
 
 use domain\questions as questions;
